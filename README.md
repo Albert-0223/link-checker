@@ -8,10 +8,10 @@ It is designed for documentation maintainers and contributors who want to quickl
 
 ## 🔧 What It Does
 
-- Reads an Excel file (`Check.xlsx`) that includes:
+- Reads an Excel file (`Invalid-link-check.xlsx`) that includes:
   - A **broken link ID** (text snippet to search for)
   - A **GitHub blob-style URL** to a file (e.g., markdown, YAML)
-- Converts the GitHub blob URL into a local file path (based on a configured local repository path)
+- Converts the GitHub blob URL into a local file path (based on a configured local repository root folder)
 - Opens the file and checks if it contains the specified text
 - Outputs a formatted Excel file with a result column:
   - ✅ **If found** → leaves the cell empty
@@ -26,18 +26,18 @@ It is designed for documentation maintainers and contributors who want to quickl
 
 ## 📂 Folder & File Structure
 
-- **Input**: Excel file named `Check.xlsx` located on your **Desktop**
+- **Input**: Excel file named `Invalid-link-check.xlsx` located on your **Desktop**
 - **Output**: A timestamped Excel file saved under a new folder:
 
 ```yaml
 Desktop/
  └── Link-checker/
- └── Check_Result_YYYY-MM-DD_HH-MM-SS.xlsx
+     └── Check_Result_YYYY-MM-DD_HH-MM-SS.xlsx
 ```
 
 ---
 
-## 📝 Input Format: `Check.xlsx`
+## 📝 Input Format: `Invalid-link-check.xlsx`
 
 Must include **two columns** with the following exact headers:
 
@@ -63,15 +63,15 @@ The script adds a new column `Check Result` with one of the following values:
 
 ## ⚙️ Configuration
 
-Update this line in the script to point to your local clone of the target repository:
+Update this line in the script to point to the root folder containing your local GitHub repositories:
 
 ```python
-REPO_PATH = r'C:\Projects\your-repo-name'
+SEARCH_ROOT = r'C:\Projects'
 ```
 
-Make sure the file structure in your local repo matches the URLs in the `Source URL` column.
+Make sure the file structure in your local repo matches the paths in the `Source URL` column (usually corresponds to the `main` branch on GitHub).
 
-------
+---
 
 ## ✅ Requirements
 
@@ -82,27 +82,27 @@ Make sure the file structure in your local repo matches the URLs in the `Source 
 pip install pandas openpyxl
 ```
 
-------
+---
 
 ## ▶️ How to Use
 
-1. Save your input Excel file as `Check.xlsx` on your **Desktop**
-2. Ensure your local repository is up-to-date (e.g., on the `main` branch)
+1. Save your input Excel file as `Invalid-link-check.xlsx` on your **Desktop**
+2. Ensure your local repositories are up-to-date (e.g., on the `main` branch)
 3. Run the script in your Python environment
 4. Once complete:
    - A formatted Excel file is saved in `~/Desktop/Link-checker/`
    - The file opens automatically
 
-------
+---
 
 ## 💡 Notes
 
 - Supports any text-based file (`.md`, `.yml`, `.json`, `.txt`, etc.)
-- Does **not** parse structured formats (e.g., YAML keys) — checks are simple text match
+- Does **not** parse structured formats (e.g., YAML keys) — checks are plain-text search
 - Only supports GitHub-style blob links: `https://github.com/.../blob/branch/path/to/file.ext`
-- Assumes file structure in your local repo matches the branch in the URL (typically `main`)
+- Assumes file structure in your local repo matches the branch and paths in the URL
 
-------
+---
 
 ## 📄 License
 
