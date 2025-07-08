@@ -5,8 +5,8 @@ from openpyxl.styles import Font
 from datetime import datetime
 
 # ========== Configuration ==========
-REPO_PATH = r'C:\Projects\azure-databases-docs-pr'
-input_file = r"C:\Users\v-bowenyang\Desktop\Check.xlsx"
+SEARCH_ROOT = r'C:\Projects'  # Root directory where all local repos are stored
+input_file = r"C:\Users\v-bowenyang\Desktop\Invalid-link-check.xlsx"
 
 # Create output directory on Desktop
 desktop = os.path.join(os.path.expanduser("~"), "Desktop")
@@ -30,8 +30,16 @@ for index, row in df.iterrows():
 
     if '/blob/' in github_url:
         try:
-            relative_path = github_url.split('/blob/', 1)[1].split('/', 1)[1]
-            local_path = os.path.join(REPO_PATH, relative_path.replace('/', os.sep))
+            # Extract repo name and relative path from GitHub URL
+            repo_info = github_url.split('github.com/')[1].split('/blob/', 1)
+            repo_parts = repo_info[0].split('/')
+            repo_name = repo_parts[1]
+            relative_path = repo_info[1].split('/', 1)[1]
+
+            # Construct full local path using SEARCH_ROOT and repo name
+            local_repo_path = os.path.join(SEARCH_ROOT, repo_name)
+            local_path = os.path.join(local_repo_path, relative_path.replace('/', os.sep))
+
         except Exception:
             results.append('Path parsing failed')
             continue
